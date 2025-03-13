@@ -1,0 +1,22 @@
+#Bubble sort ascending order(count and display the each element no. of times swapping is occured).
+def bubble_sort_asc(arr):
+    n = len(arr)
+    swap = {num: 0 for num in arr}    
+    for i in range(n):
+        swapped = False
+        for j in range(n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j] 
+                swap[arr[j]] += 1  
+                swap[arr[j + 1]] += 1  
+                swapped = True  
+        print(f"Pass {i+1}: {arr}")  
+        if not swapped:
+            break  
+    print("\n Swap Count for Each Element: ")
+    for key, value in swap.items():
+        print(f"Element {key} swapped {value} times")
+
+# Example usage
+arr = [10,20,30,20,10,0,40,70,20]
+bubble_sort_asc(arr)
