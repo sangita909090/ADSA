@@ -1,0 +1,64 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedListQueue:
+    def __init__(self):
+        self.front = self.rear = None
+
+    def enqueue(self, x):
+        new_node = Node(x)
+        if not self.rear:
+            self.front = self.rear = new_node
+            return
+        self.rear.next = new_node
+        self.rear = new_node
+
+    def dequeue(self):
+        if not self.front:
+            return None
+        temp = self.front
+        self.front = self.front.next
+        if not self.front:
+            self.rear = None
+        return temp.data
+
+    def is_empty(self):
+        return self.front is None
+
+    def print_queue(self):
+        temp = self.front
+        while temp:
+            print(temp.data, end=" -> ")
+            temp = temp.next
+        print("None")
+
+# Reverse Queue Using Recursion
+def reverse_linked_list_queue(queue):
+    if queue.is_empty():
+        return
+    item = queue.dequeue()
+    reverse_linked_list_queue(queue)
+    insert_at_rear(queue, item)
+
+def insert_at_rear(queue, item):
+    if queue.is_empty():
+        queue.enqueue(item)
+        return
+    temp = queue.dequeue()
+    insert_at_rear(queue, item)
+    queue.enqueue(temp)
+
+# Example Usage of LinkedListQueue
+queue = LinkedListQueue()
+queue.enqueue(1)
+queue.enqueue(2)
+queue.enqueue(3)
+queue.enqueue(4)
+queue.enqueue(5)
+print("Original Queue:")
+queue.print_queue()
+reverse_linked_list_queue(queue)
+print("Reversed Queue:")
+queue.print_queue()
