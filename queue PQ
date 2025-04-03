@@ -1,0 +1,166 @@
+
+# 1. Queue using Two Stacks
+class QueueUsingStacks:
+    def __init__(self):
+        self.stack1 = []
+        self.stack2 = []
+
+    def enqueue(self, x):
+        self.stack1.append(x)
+    
+    def dequeue(self):
+        if not self.stack2:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        return self.stack2.pop() if self.stack2 else None
+    
+    def peek(self):
+        if not self.stack2:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        return self.stack2[-1] if self.stack2 else None
+    
+    def is_empty(self):
+        return not self.stack1 and not self.stack2
+
+# Example Usage
+queue = QueueUsingStacks()
+queue.enqueue(1)
+queue.enqueue(2)
+queue.enqueue(3)
+print("Dequeued:", queue.dequeue())
+print("Peek:", queue.peek())
+
+# 2. Reverse a Queue Using Recursion
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedListQueue:
+    def __init__(self):
+        self.front = self.rear = None
+
+    def enqueue(self, x):
+        new_node = Node(x)
+        if not self.rear:
+            self.front = self.rear = new_node
+            return
+        self.rear.next = new_node
+        self.rear = new_node
+
+    def dequeue(self):
+        if not self.front:
+            return None
+        temp = self.front
+        self.front = self.front.next
+        if not self.front:
+            self.rear = None
+        return temp.data
+
+    def is_empty(self):
+        return self.front is None
+
+def reverse_linked_list_queue(queue):
+    if queue.is_empty():
+        return
+    item = queue.dequeue()
+    reverse_linked_list_queue(queue)
+    insert_at_rear(queue, item)
+
+def insert_at_rear(queue, item):
+    if queue.is_empty():
+        queue.enqueue(item)
+        return
+    temp = queue.dequeue()
+    insert_at_rear(queue, item)
+    queue.enqueue(temp)
+
+# Example Usage
+queue = LinkedListQueue()
+queue.enqueue(1)
+queue.enqueue(2)
+queue.enqueue(3)
+reverse_linked_list_queue(queue)
+
+# 3. Queue with max() operation
+class MaxQueue:
+    def __init__(self):
+        self.queue = deque()
+        self.max_deque = deque()
+
+    def enqueue(self, x):
+        self.queue.append(x)
+        while self.max_deque and self.max_deque[-1] < x:
+            self.max_deque.pop()
+        self.max_deque.append(x)
+
+    def dequeue(self):
+        if not self.queue:
+            return None
+        removed = self.queue.popleft()
+        if removed == self.max_deque[0]:
+            self.max_deque.popleft()
+        return removed
+
+    def max(self):
+        return self.max_deque[0] if self.max_deque else None
+
+# Example Usage
+queue = MaxQueue()
+queue.enqueue(1)
+queue.enqueue(3)
+queue.enqueue(2)
+print("Max Element:", queue.max())
+
+# 4. Merge Two Queues
+def merge_queues(queue1, queue2):
+    merged_queue = deque()
+    while queue1 or queue2:
+        if queue1:
+            merged_queue.append(queue1.popleft())
+        if queue2:
+            merged_queue.append(queue2.popleft())
+    return list(merged_queue)
+
+# Example Usage
+queue1 = deque([1, 3, 5])
+queue2 = deque([2, 4, 6])
+print("Merged Queue:", merge_queues(queue1, queue2))
+
+# 5. Count occurrences of an element in a queue
+def count_occurrences(queue, element):
+    return queue.count(element)
+
+# Example Usage
+queue = deque([1, 2, 3, 2, 2])
+print("Occurrences of 2:", count_occurrences(queue, 2))
+
+# 6. Reverse words in a sentence using a queue
+def reverse_words(sentence):
+    queue = deque(sentence.split())
+    return ' '.join(reversed(queue))
+
+# Example Usage
+print("Reversed Sentence:", reverse_words("Hello World"))
+
+# 7. Queue with contains(x) operation
+class QueueWithContains:
+    def __init__(self):
+        self.queue = deque()
+
+    def enqueue(self, x):
+        self.queue.append(x)
+    
+    def dequeue(self):
+        return self.queue.popleft() if self.queue else None
+    
+    def contains(self, x):
+        return x in self.queue
+
+# Example Usage
+queue = QueueWithContains()
+queue.enqueue(1)
+queue.enqueue(2)
+queue.enqueue(3)
+print("Contains 2:", queue.contains(2))
